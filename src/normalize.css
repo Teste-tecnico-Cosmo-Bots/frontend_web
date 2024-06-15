@@ -6,6 +6,22 @@
   --tertiary-color: #17f6f5;
   --text-one: #fff;
   --text-two: #000;
+  --gray: #d7d7d7;
+}
+
+@keyframes colorCycle {
+  0% {
+    box-shadow: 2px 2px 3px 3px var(--primary-color);
+  }
+  33% {
+    box-shadow: 2px 2px 3px 3px var(--secondary-color);
+  }
+  66% {
+    box-shadow: 2px 2px 3px 3px var(--tertiary-color);
+  }
+  100% {
+    box-shadow: 2px 2px 3px 2px var(--primary-color);
+  }
 }
 
 html,
@@ -138,6 +154,9 @@ table {
 }
 
 p,
-button {
+button,
+label,
+input,
+textarea {
   font-family: "Comfortaa", sans-serif;
 }

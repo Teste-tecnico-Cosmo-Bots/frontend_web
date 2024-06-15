@@ -6,15 +6,13 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { computed } from "vue";
 import moment from "moment";
 import "moment/locale/pt-br";
 
 moment.locale("pt-br");
 
-const date = ref("2024-06-13");
-
-const formattedDate = moment(date.value).format("dddd, D [de] MMMM [de] YYYY");
+const formattedDate = moment().format("dddd, D [de] MMMM [de] YYYY");
 
 // Função para capitalizar a primeira letra
 function capitalizeFirstLetter(string) {
@@ -24,4 +22,17 @@ function capitalizeFirstLetter(string) {
 const capitalizedDate = computed(() => capitalizeFirstLetter(formattedDate));
 </script>
 
-<style scoped></style>
+<style scoped>
+.header-content {
+  margin: 0 auto;
+  max-width: 1000px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-content p {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-one);
+}
+</style>
