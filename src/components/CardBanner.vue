@@ -75,9 +75,9 @@ import logo from "../assets/svg/logo.svg";
 }
 
 .content-button button {
-  max-width: 279px;
-  width: 279px;
-  padding: 20px 0;
+  max-width: 250px;
+  width: 250px;
+  padding: 15px 0;
   background-color: var(--primary-color);
   color: var(--text-one);
   border: 2px solid var(--text-one);
@@ -85,6 +85,7 @@ import logo from "../assets/svg/logo.svg";
   transition: 0.3s;
   font-weight: 700;
   border-radius: 5px;
+  margin-top: 10px;
 }
 
 .content-button button:hover {
@@ -99,8 +100,8 @@ import logo from "../assets/svg/logo.svg";
 
 .new-card {
   position: absolute;
-  background-color: var(--tertiary-color);
-  color: var(--primary-color);
+  background-color: var(--secondary-color);
+  color: var(--text-one);
   border-radius: 5px;
   padding: 8px 10px;
 }

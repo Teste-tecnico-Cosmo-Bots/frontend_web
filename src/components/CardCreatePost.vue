@@ -43,4 +43,67 @@ const props = defineProps({
 });
 </script>
 
-<style></style>
+<style>
+.card-create-post {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.card-create-post p {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.form-label {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--primary-color);
+}
+.form-input {
+  padding: 10px 10px;
+  outline: none;
+  border: 2px solid var(--primary-color);
+  border-radius: 5px;
+  font-size: 12px;
+}
+.form-textarea {
+  width: 100%;
+  border: 2px solid var(--primary-color);
+
+  resize: none;
+  padding: 10px 10px;
+  border-radius: 5px;
+  font-size: 13px;
+  min-height: 80px;
+  outline: none;
+}
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.button-group button {
+  padding: 8px 20px;
+  border: 2px solid var(--secondary-color);
+  background-color: var(--text-one);
+  color: var(--secondary-color);
+  font-weight: 700;
+  border-radius: 5px;
+  transition: 0.3s;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--secondary-color);
+    color: var(--text-one);
+  }
+}
+</style>

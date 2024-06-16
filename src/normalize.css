@@ -157,6 +157,7 @@ p,
 button,
 label,
 input,
+span,
 textarea {
   font-family: "Comfortaa", sans-serif;
 }
