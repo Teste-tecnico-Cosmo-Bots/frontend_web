@@ -1,3 +1,7 @@
+Claro! Aqui está o README atualizado sem a seção sobre Variáveis de Ambiente:
+
+---
+
 ## README - Como Usar a Aplicação
 
 Este README fornece instruções básicas sobre como configurar e utilizar a aplicação **CosmoBots**. A seguir, são apresentados os passos para configurar o ambiente de desenvolvimento, executar a aplicação e realizar operações básicas.
@@ -38,31 +42,19 @@ Certifique-se de que o backend da aplicação está configurado corretamente. Is
 
 ### Configuração do Ambiente Frontend
 
-1. **Variáveis de Ambiente**
+Para facilitar o uso da API, configure o cliente Axios para utilizar uma rota base. Isto ajuda a centralizar a URL base para todas as requisições, simplificando o código e a manutenção.
 
-   Crie um arquivo `.env` na raiz do projeto para configurar variáveis de ambiente necessárias (exemplo abaixo):
+No arquivo `src/services/api.js`, configure o cliente Axios da seguinte forma:
 
-   ```
-   VUE_APP_API_URL=http://localhost:3000/api/v1
-   ```
+```javascript
+import axios from "axios";
 
-   Substitua `http://localhost:3000/api/v1` pela URL do backend da sua aplicação.
+const API_URL = "http://localhost:3000/api/v1";
 
-2. **Configuração do Cliente da API**
-
-   Para facilitar o uso da API, configure o cliente Axios para utilizar uma rota base. Isto ajuda a centralizar a URL base para todas as requisições, simplificando o código e a manutenção.
-
-   No arquivo `src/services/api.js`, configure o cliente Axios da seguinte forma:
-
-   ```javascript
-   import axios from "axios";
-
-   const API_URL = "http://localhost:3000/api/v1";
-
-   export const apiClient = axios.create({
-     baseURL: API_URL,
-   });
-   ```
+export const apiClient = axios.create({
+  baseURL: API_URL,
+});
+```
 
 ### Execução da Aplicação
 
