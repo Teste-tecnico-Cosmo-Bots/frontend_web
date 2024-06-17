@@ -2,43 +2,40 @@
   <div class="container-sub">
     <div class="content-sub">
       <p class="title-sub">
-        Ruby on Rails: A Framework que Revolucionou o Desenvolvimento Web
+        {{ limitText(postsOne?.title, 55) }}
       </p>
       <p class="description-sub">
-        Conheça o Ruby on Rails, um dos frameworks mais populares e influentes
-        no desenvolvimento...
+        {{ limitText(postsOne?.description, 86) }}
       </p>
       <div class="container-button">
         <img :src="attentionIcon" />
-        <button>Clique e saiba mais</button>
+        <button @click="goToPost(postsOne.id)">Clique e saiba mais</button>
       </div>
     </div>
 
     <div class="content-sub">
       <p class="title-sub">
-        Ruby on Rails: A Framework que Revolucionou o Desenvolvimento Web
+        {{ limitText(postsTwo?.title, 55) }}
       </p>
       <p class="description-sub">
-        Conheça o Ruby on Rails, um dos frameworks mais populares e influentes
-        no desenvolvimento...
+        {{ limitText(postsTwo?.description, 86) }}
       </p>
       <div class="container-button">
         <img :src="attentionIcon" />
-        <button>Clique e saiba mais</button>
+        <button @click="goToPost(postsTwo.id)">Clique e saiba mais</button>
       </div>
     </div>
 
     <div class="content-sub">
       <p class="title-sub">
-        Ruby on Rails: A Framework que Revolucionou o Desenvolvimento Web
+        {{ limitText(postsThree?.title, 55) }}
       </p>
       <p class="description-sub">
-        Conheça o Ruby on Rails, um dos frameworks mais populares e influentes
-        no desenvolvimento...
+        {{ limitText(postsThree?.description, 86) }}
       </p>
       <div class="container-button">
         <img :src="attentionIcon" />
-        <button>Clique e saiba mais</button>
+        <button @click="goToPost(postsThree.id)">Clique e saiba mais</button>
       </div>
     </div>
   </div>
@@ -46,7 +43,21 @@
 
 <script setup>
 import attentionIcon from "../assets/svg/attention.svg";
+import { computed } from "vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+import { limitText } from "../utils/String.js";
 
+const router = useRouter();
+const store = useStore();
+
+const postsOne = computed(() => store.getters.posts[0]);
+const postsTwo = computed(() => store.getters.posts[1]);
+const postsThree = computed(() => store.getters.posts[2]);
+
+const goToPost = (id) => {
+  router.push({ path: `/post/${id}` });
+};
 // import logo from "../assets/svg/logo.svg";
 </script>
 
@@ -68,6 +79,7 @@ import attentionIcon from "../assets/svg/attention.svg";
   border-radius: 5px;
   box-shadow: 1px 1px 2px 2px var(--primary-color);
   transition: 0.3s;
+  justify-content: space-between;
 
   &:hover {
     transform: scale(1.01);
@@ -81,11 +93,13 @@ import attentionIcon from "../assets/svg/attention.svg";
   line-height: 1.2;
   font-weight: 700;
   color: var(--primary-color);
+  word-wrap: break-word;
 }
 .description-sub {
   font-size: 13px;
   line-height: 1.2;
   color: var(--primary-color);
+  word-wrap: break-word;
 }
 
 .container-button {

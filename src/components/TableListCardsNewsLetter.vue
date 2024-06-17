@@ -4,7 +4,7 @@
     <div class="container-new-letter-one">
       <div class="card-new-letter-one">
         <p class="title">
-          {{ post.title }}
+          {{ limitText(post.title, 85) }}
         </p>
 
         <div>
@@ -25,10 +25,10 @@
               <p class="content-card-new">{{ post.formatted_created_at }}</p>
             </div>
 
-            <div>
+            <!-- <div>
               <p class="title-card-new">Curtidas:</p>
               <p class="content-card-new">14 curtidas</p>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -39,6 +39,7 @@
 
 <script setup>
 import { computed, onMounted } from "vue";
+import { limitText } from "../utils/String.js";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 

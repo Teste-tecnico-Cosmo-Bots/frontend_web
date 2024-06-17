@@ -22,15 +22,21 @@
         Publicado há: {{ coment?.formatted_created_at }}
       </p>
 
-      <img :src="trashIcon" class="comment-icon" />
+      <img
+        v-if="exist && user == coment?.user?.id"
+        :src="trashIcon"
+        @click="deleteComment(coment.id)"
+        class="comment-icon"
+      />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { defineProps } from "vue";
 import trashIcon from "../assets/svg/trash.svg";
+import { jwtDecode } from "jwt-decode";
 
 import { useStore } from "vuex";
 
@@ -47,7 +53,12 @@ const props = defineProps({
   },
 });
 
+const token = localStorage.getItem("token");
+
 const comment = ref("");
+
+const user = computed(() => jwtDecode(token).user_id);
+const exist = computed(() => token);
 
 const submitComment = async () => {
   if (comment.value.trim()) {
@@ -61,6 +72,12 @@ const submitComment = async () => {
   } else {
     alert("Por favor, digite um comentário antes de enviar.");
   }
+};
+
+const deleteComment = async (id) => {
+  await store.dispatch("deleteComment", { id });
+  await store.dispatch("getOnePosts", { id: props.postId });
+  // await store.dispatch("getPosts", {});
 };
 </script>
 

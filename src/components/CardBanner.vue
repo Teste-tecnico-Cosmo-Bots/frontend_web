@@ -9,18 +9,16 @@
     </div>
     <div class="card-new-letter">
       <div class="content">
-        <p class="title">
-          Ruby on Rails: A Framework que Revolucionou o Desenvolvimento Web
+        <p class="title-new">
+          {{ limitText(posts?.title, 100) }}
         </p>
-        <p class="description">
-          Conheça o Ruby on Rails, um dos frameworks mais populares e influentes
-          no desenvolvimento web, e descubra como ele continua a transformar a
-          maneira como desenvolvemos aplicações modernas.
+        <p class="description-new">
+          {{ limitText(posts?.description, 200) }}
         </p>
       </div>
 
       <div class="content-button">
-        <button>Clique e saiba mais</button>
+        <button @click="goToPost(posts.id)">Clique e saiba mais</button>
       </div>
     </div>
   </div>
@@ -28,6 +26,19 @@
 
 <script setup>
 import logo from "../assets/svg/logo.svg";
+import { computed } from "vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+import { limitText } from "../utils/String.js";
+
+const router = useRouter();
+const store = useStore();
+
+const posts = computed(() => store.getters.posts[0]);
+
+const goToPost = (id) => {
+  router.push({ path: `/post/${id}` });
+};
 </script>
 
 <style scoped>
@@ -42,6 +53,14 @@ import logo from "../assets/svg/logo.svg";
   border-radius: 5px;
   padding: 30px 0;
   margin-top: 20px;
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.content-button {
+  width: 100%;
 }
 
 .card-new-letter div {
@@ -56,22 +75,24 @@ import logo from "../assets/svg/logo.svg";
   color: var(--text-one);
 }
 
-.title {
+.content-button {
+  display: flex;
+  align-items: end;
+}
+
+.title-new {
   font-size: 20px;
   text-align: center;
   line-height: 1.2;
   transition: 0.2s;
+  word-wrap: break-word;
 }
 
-.description {
+.description-new {
   font-size: 14px;
   font-weight: 300;
   line-height: 1.2;
-}
-
-.content-button {
-  display: flex;
-  align-items: end;
+  word-wrap: break-word;
 }
 
 .content-button button {

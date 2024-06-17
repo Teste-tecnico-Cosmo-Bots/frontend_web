@@ -85,3 +85,16 @@ export const createComment = async (data) => {
     console.error("Erro ao fazer login:", error);
   }
 };
+
+export const destroyComment = async (id) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return false;
+    }
+    apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    await apiClient.delete(`/comments/${id}`);
+  } catch (error) {
+    console.error("Erro ao fazer login:", error);
+  }
+};

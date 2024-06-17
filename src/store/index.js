@@ -9,6 +9,7 @@ import {
   detailsPost,
   createComment,
   register,
+  destroyComment,
 } from "../services/api.js";
 
 const store = createStore({
@@ -117,6 +118,15 @@ const store = createStore({
     async submitComment({}, { content, post_id }) {
       try {
         await createComment({ content, post_id });
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    async deleteComment({}, { id }) {
+      try {
+        await destroyComment(id);
         return true;
       } catch (error) {
         console.log(error);
