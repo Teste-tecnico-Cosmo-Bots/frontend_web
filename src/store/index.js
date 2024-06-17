@@ -101,7 +101,6 @@ const store = createStore({
     },
 
     async submitEditPosts({}, { title, description, content, id }) {
-      console.log(555, { title, description, content, id });
       try {
         await editPost({ title, description, content }, id);
 

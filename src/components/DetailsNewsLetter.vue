@@ -5,7 +5,7 @@
       <div>
         <p>{{ props.post?.formatted_created_at_long }}</p>
         <button
-          v-if="(exist && user == props?.user?.id) || props.isAdmin"
+          v-if="(exist && user == props?.post?.user_id) || props.isAdmin"
           @click="openModal"
         >
           Editar
@@ -38,6 +38,8 @@ const token = localStorage.getItem("token");
 
 const user = computed(() => jwtDecode(token).user_id);
 const exist = computed(() => token);
+
+console.log(jwtDecode(token).user_id, token, 202020);
 
 const props = defineProps({
   post: {

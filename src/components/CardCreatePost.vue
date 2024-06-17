@@ -85,7 +85,9 @@ const handleSubmit = () => {
       content,
       id: props.post.id,
     });
-    store.dispatch("getOnePosts", { id: props.post.id });
+    setTimeout(() => {
+      store.dispatch("getOnePosts", { id: props.post.id });
+    }, 1000);
     toast.success("Post editado com sucesso!", {
       timeout: 3000,
     });
