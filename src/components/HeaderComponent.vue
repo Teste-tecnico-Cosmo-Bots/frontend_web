@@ -3,25 +3,36 @@
     <p>{{ capitalizedDate }}</p>
     <p class="home-text" @click="onHome">Notícias do universo tech</p>
 
-    <div @click="onLogin">
+    <div @click="!user && onLogin()">
       <img :src="personIcon" />
-      <p class="text-login">Faça login</p>
+      <div v-if="user">
+        <p class="text-login">{{ user.nome }}</p>
+        <p @click="user && onLogin()" id="exit-account" class="text-login">
+          Sair
+        </p>
+      </div>
+      <p v-else class="text-login">Faça login</p>
     </div>
   </header>
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
+import { useStore } from "vuex";
 import personIcon from "../assets/png/people.png";
+
 import moment from "moment";
 import "moment/locale/pt-br";
 import { useRouter } from "vue-router";
+
 moment.locale("pt-br");
 const formattedDate = moment().format("dddd, D [de] MMMM [de] YYYY");
 
 const router = useRouter();
+const store = useStore();
 
-const onLogin = () => {
+const onLogin = async () => {
+  await store.dispatch("signOut");
   router.push({ path: "/login" });
 };
 
@@ -35,6 +46,20 @@ function capitalizeFirstLetter(string) {
 }
 
 const capitalizedDate = computed(() => capitalizeFirstLetter(formattedDate));
+
+const checkTokenValidity = async () => {
+  try {
+    await store.dispatch("validateToken");
+  } catch (error) {
+    console.log("");
+  }
+};
+
+onMounted(() => {
+  checkTokenValidity();
+});
+
+const user = computed(() => store.getters.user);
 </script>
 
 <style scoped>
@@ -70,5 +95,11 @@ const capitalizedDate = computed(() => capitalizeFirstLetter(formattedDate));
 .home-text {
   cursor: pointer;
   transform: translateX(-15px);
+}
+
+#exit-account {
+  color: var(--secondary-color);
+  transform: translateY(2px);
+  font-width: bold;
 }
 </style>

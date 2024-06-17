@@ -1,17 +1,21 @@
-<!-- eslint-disable-next-line vue/multi-word-component-names -->
 <template>
   <div class="card-create-post">
-    <p>{{ props.create ? "Criar novo post" : "Editar post existente" }}</p>
+    <p>{{ create ? "Criar novo post" : "Editar post existente" }}</p>
 
     <div class="form-group">
       <label class="form-label">
         Título
-        <input class="form-input" placeholder="Insira aqui seu título" />
+        <input
+          v-model="postData.title"
+          class="form-input"
+          placeholder="Insira aqui seu título"
+        />
       </label>
 
       <label class="form-label">
         Descrição
         <textarea
+          v-model="postData.description"
           class="form-textarea"
           placeholder="Insira aqui sua descrição"
         ></textarea>
@@ -20,6 +24,7 @@
       <label class="form-label">
         Conteúdo
         <textarea
+          v-model="postData.content"
           class="form-textarea"
           placeholder="Insira aqui seu conteúdo"
         ></textarea>
@@ -27,13 +32,20 @@
     </div>
 
     <div class="button-group">
-      <button class="btn-primary">Publicar</button>
+      <button @click="handleSubmit" class="btn-primary">
+        {{ create ? "Publicar" : "Salvar Alterações" }}
+      </button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { defineProps } from "vue";
+import { defineProps, ref, defineEmits } from "vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+
+const store = useStore();
+const router = useRouter();
 
 const props = defineProps({
   create: {
@@ -41,9 +53,28 @@ const props = defineProps({
     default: false,
   },
 });
+
+const emit = defineEmits(["close"]);
+
+const postData = ref({
+  title: "",
+  description: "",
+  content: "",
+});
+
+const handleSubmit = () => {
+  const { title, description, content } = postData.value;
+
+  if (props.create) {
+    store.dispatch("submitPosts", { title, description, content, router });
+    emit("close");
+  } else {
+    return null;
+  }
+};
 </script>
 
-<style>
+<style scoped>
 .card-create-post {
   display: flex;
   flex-direction: column;
@@ -61,6 +92,7 @@ const props = defineProps({
   flex-direction: column;
   gap: 20px;
 }
+
 .form-label {
   display: flex;
   flex-direction: column;
@@ -68,6 +100,7 @@ const props = defineProps({
   font-size: 13px;
   color: var(--primary-color);
 }
+
 .form-input {
   padding: 10px 10px;
   outline: none;
@@ -75,10 +108,10 @@ const props = defineProps({
   border-radius: 5px;
   font-size: 12px;
 }
+
 .form-textarea {
   width: 100%;
   border: 2px solid var(--primary-color);
-
   resize: none;
   padding: 10px 10px;
   border-radius: 5px;
@@ -86,6 +119,7 @@ const props = defineProps({
   min-height: 80px;
   outline: none;
 }
+
 .button-group {
   display: flex;
   justify-content: flex-end;

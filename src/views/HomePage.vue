@@ -16,7 +16,7 @@
       </div>
       <TableListCardsNewsLetter />
       <ModalBase :isVisible="isModalVisible" @close="closeModal">
-        <CardCreatePost :create="true" />
+        <CardCreatePost :create="true" @close="closeModal" />
       </ModalBase>
     </div>
   </div>
@@ -34,9 +34,17 @@ import ModalBase from "../components/ModalBase.vue";
 import CardCreatePost from "../components/CardCreatePost.vue";
 
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+
 const isModalVisible = ref(false);
+const router = useRouter();
 
 const openModal = () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    router.push({ path: "/login" });
+    return false;
+  }
   isModalVisible.value = true;
 };
 

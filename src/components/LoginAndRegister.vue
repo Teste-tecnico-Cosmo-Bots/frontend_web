@@ -65,12 +65,10 @@
 
 <script setup>
 import { ref } from "vue";
-const name = ref("");
-const email = ref("");
-const password = ref("");
-const confirmPassword = ref("");
-
+import { useStore } from "vuex";
 import { defineProps, defineEmits } from "vue";
+import { useRouter } from "vue-router";
+
 const emit = defineEmits(["openRegister", "openLogin"]);
 
 const props = defineProps({
@@ -79,10 +77,30 @@ const props = defineProps({
     default: true,
   },
 });
-const handleSubmit = () => {
-  if (props.isLogin.value) {
-    // Lógica de login
-    console.log("Login:", { email: email.value, password: password.value });
+
+const store = useStore();
+const router = useRouter();
+
+const name = ref("");
+const email = ref("");
+const password = ref("");
+const confirmPassword = ref("");
+
+const handleSubmit = async () => {
+  if (props.isLogin) {
+    try {
+      await store.dispatch("signIn", {
+        email: email.value,
+        password: password.value,
+      });
+
+      router.push("/");
+    } catch (error) {
+      console.error("Erro ao fazer login:", error);
+      alert(
+        "Falha ao fazer login. Verifique suas credenciais e tente novamente."
+      );
+    }
   } else {
     // Lógica de cadastro
     if (password.value !== confirmPassword.value) {

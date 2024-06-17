@@ -1,21 +1,23 @@
 <!-- eslint-disable-next-line vue/multi-word-component-names -->
 <template>
-  <div class="content-cards-list-news">
+  <div v-for="post in posts" :key="post.id" class="content-cards-list-news">
     <div class="container-new-letter-one">
       <div class="card-new-letter-one">
         <p class="title">
-          Ruby on Rails: A Framework que Revolucionou o Desenvolvimento Web....
+          {{ post.title }}
         </p>
 
         <div>
           <div class="details-card-news">
             <div>
               <p class="title-card-new">Autor:</p>
-              <p class="content-card-new">Lucas Alex</p>
+              <p class="content-card-new">{{ post.user.nome }}</p>
             </div>
             <div>
               <p class="title-card-new">Comentários:</p>
-              <p class="content-card-new">2 comentários</p>
+              <p class="content-card-new">
+                {{ post.comments.length }} comentários
+              </p>
             </div>
 
             <div>
@@ -36,13 +38,30 @@
 </template>
 
 <script setup>
+import { computed, onMounted } from "vue";
+import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
+const store = useStore();
 
 const goToPost = (id) => {
   router.push({ path: `/post/${id}` });
 };
+
+const getAllPosts = async () => {
+  try {
+    await store.dispatch("getPosts");
+  } catch (error) {
+    console.log("");
+  }
+};
+
+onMounted(() => {
+  getAllPosts();
+});
+
+const posts = computed(() => store.getters.posts);
 </script>
 
 <style>

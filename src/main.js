@@ -3,5 +3,11 @@ import App from "./App.vue";
 import router from "./routes";
 import "./normalize.css";
 import "./teste.css";
+import store from "./store/index";
 
-createApp(App).use(router).mount("#app");
+const app = createApp(App);
+
+app.use(router);
+app.use(store);
+
+app.mount("#app");
