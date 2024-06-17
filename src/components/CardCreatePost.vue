@@ -67,6 +67,7 @@ const handleSubmit = () => {
 
   if (props.create) {
     store.dispatch("submitPosts", { title, description, content, router });
+    store.dispatch("getPosts", {});
     emit("close");
   } else {
     return null;

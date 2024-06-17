@@ -22,7 +22,7 @@
 
             <div>
               <p class="title-card-new">Tempo:</p>
-              <p class="content-card-new">20 minutos atrás</p>
+              <p class="content-card-new">{{ post.formatted_created_at }}</p>
             </div>
 
             <div>
@@ -32,7 +32,7 @@
           </div>
         </div>
       </div>
-      <button @click="goToPost(1)">Veja mais</button>
+      <button @click="goToPost(post.id)">Veja mais</button>
     </div>
   </div>
 </template>
@@ -81,7 +81,7 @@ const posts = computed(() => store.getters.posts);
 
   &:hover {
     transform: scale(1.01);
-    animation: colorCycle 8s infinite;
+    box-shadow: 2px 2px 3px 3px var(--secondary-color);
   }
 }
 
@@ -132,5 +132,14 @@ const posts = computed(() => store.getters.posts);
 
 .content-card-new {
   font-size: 13px;
+}
+
+.container-new-letter-one {
+  position: relative;
+}
+
+.container-new-letter-one button {
+  position: absolute;
+  right: 20px;
 }
 </style>

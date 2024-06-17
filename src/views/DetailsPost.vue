@@ -2,18 +2,38 @@
 <template>
   <div class="home">
     <HeaderNewLatters :margin="0" />
-
     <div class="container-content">
-      <DetailsNewsLetter />
-      <ComentsDetails />
+      <DetailsNewsLetter :post="postOne" />
+      <ComentsDetails :commentsAll="postOne?.comments" :postId="postId" />
     </div>
   </div>
 </template>
 
 <script setup>
+import { computed, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import { useStore } from "vuex";
 import HeaderNewLatters from "../components/HeaderNewLatters.vue";
 import DetailsNewsLetter from "../components/DetailsNewsLetter.vue";
 import ComentsDetails from "../components/ComentsDetails.vue";
+
+const route = useRoute();
+const store = useStore();
+const postId = route.params.id;
+
+const getOnePosts = async () => {
+  try {
+    await store.dispatch("getOnePosts", { id: postId });
+  } catch (error) {
+    console.log("");
+  }
+};
+
+onMounted(() => {
+  getOnePosts();
+});
+
+const postOne = computed(() => store.getters.postOne);
 </script>
 
 <style>

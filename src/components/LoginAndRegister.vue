@@ -96,22 +96,26 @@ const handleSubmit = async () => {
 
       router.push("/");
     } catch (error) {
-      console.error("Erro ao fazer login:", error);
-      alert(
-        "Falha ao fazer login. Verifique suas credenciais e tente novamente."
-      );
+      console.log(error);
     }
   } else {
-    // Lógica de cadastro
     if (password.value !== confirmPassword.value) {
       alert("As senhas não coincidem.");
       return;
     }
-    console.log("Cadastro:", {
-      name: name.value,
-      email: email.value,
-      password: password.value,
-    });
+
+    try {
+      await store.dispatch("signup", {
+        nome: name.value,
+        email: email.value,
+        password: password.value,
+        password_confirmation: confirmPassword.value,
+      });
+
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
 
@@ -179,5 +183,30 @@ const openLogin = () => {
   &:hover {
     transform: scale(1.008);
   }
+}
+
+.form-group-register {
+  position: relative;
+}
+
+.form-label-register span {
+  display: inline-block;
+  /* transform: translate(10px, 18px); */
+  background-color: #fff;
+  transition: 0.3s ease;
+  top: -4px;
+  padding: 0 8px;
+  left: 10px;
+  position: absolute;
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.form-label-register:focus-within span {
+  top: -25px;
+  left: -5px;
+  font-size: 13px;
+  transition: 0.3s ease;
 }
 </style>

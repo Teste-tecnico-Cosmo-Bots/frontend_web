@@ -12,16 +12,15 @@
   </div>
 
   <!-- LISTA DE COMENTARIOS  -->
-  <div class="comment">
+  <div class="comment" v-for="coment in props?.commentsAll" :key="coment.id">
     <div class="comment-content">
-      <p class="comment-author">Lucas Alex</p>
+      <p class="comment-author">{{ coment?.user?.nome }}</p>
       <p class="comment-text">
-        Muito bom, é isso mesmofdgjfngkdfgkdfkgndfjknjn Muito bom, é isso
-        mesmofdgjfngkdfgkdfkgndfjknjn Muito bom, é isso
-        mesmofdgjfngkdfgkdfkgndfjknjn Muito bom, é isso
-        mesmofdgjfngkdfgkdfkgndfjknjn
+        {{ coment?.content }}
       </p>
-      <p class="comment-published">Publicado em: 19:40 de 14/06/2024</p>
+      <p class="comment-published">
+        Publicado há: {{ coment?.formatted_created_at }}
+      </p>
 
       <img :src="trashIcon" class="comment-icon" />
     </div>
@@ -30,14 +29,35 @@
 
 <script setup>
 import { ref } from "vue";
+import { defineProps } from "vue";
 import trashIcon from "../assets/svg/trash.svg";
+
+import { useStore } from "vuex";
+
+const store = useStore();
+
+const props = defineProps({
+  commentsAll: {
+    type: String,
+    required: true,
+  },
+  postId: {
+    type: String,
+    required: true,
+  },
+});
 
 const comment = ref("");
 
-const submitComment = () => {
+const submitComment = async () => {
   if (comment.value.trim()) {
-    alert(`Comentário enviado: ${comment.value}`);
+    await store.dispatch("submitComment", {
+      content: comment.value.trim(),
+      post_id: props.postId,
+    });
     comment.value = "";
+    await store.dispatch("getPosts", {});
+    await store.dispatch("getOnePosts", { id: props.postId });
   } else {
     alert("Por favor, digite um comentário antes de enviar.");
   }

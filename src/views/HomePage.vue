@@ -70,7 +70,7 @@ const closeModal = () => {
 }
 
 .container-vh2 {
-  min-height: 80vh;
+  min-height: 90vh;
 }
 
 .publish-post {

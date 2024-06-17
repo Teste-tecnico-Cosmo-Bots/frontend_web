@@ -19,6 +19,16 @@ export const signIn = async (email, password) => {
   }
 };
 
+export const register = async (data) => {
+  try {
+    const response = await apiClient.post("/signup", data);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao fazer login:", error);
+    throw error;
+  }
+};
+
 export const validToken = async (token) => {
   try {
     apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -49,6 +59,28 @@ export const listPost = async () => {
   try {
     const response = await apiClient.get("/posts");
     return response.data;
+  } catch (error) {
+    console.error("Erro ao fazer login:", error);
+  }
+};
+
+export const detailsPost = async (id) => {
+  try {
+    const response = await apiClient.get(`/posts/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao fazer login:", error);
+  }
+};
+
+export const createComment = async (data) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return false;
+    }
+    apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    await apiClient.post("/comments", data);
   } catch (error) {
     console.error("Erro ao fazer login:", error);
   }

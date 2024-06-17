@@ -2,36 +2,30 @@
 <template>
   <div>
     <div class="container-details-news">
-      <p>Quinta-feira, 13 de Junho de 2024</p>
+      <p>{{ props.post?.formatted_created_at_long }}</p>
       <p class="title-details-news">
-        Ruby on Rails: A Framework que Revolucionou o Desenvolvimento Web
+        {{ props.post?.title }}
       </p>
       <p class="description-details-news">
-        Conheça o Ruby on Rails, um dos frameworks mais populares e influentes
-        no desenvolvimento web, e descubra como ele continua a transformar a
-        maneira como desenvolvemos aplicações modernas.
+        {{ props.post?.description }}
       </p>
       <p class="content-details-news">
-        Conheça o Ruby on Rails, um dos frameworks mais populares e influentes
-        no desenvolvimento web, e descubra como ele continua a transformar a
-        maneira como desenvolvemos aplicações modernas.Conheça o Ruby on Rails,
-        um dos frameworks mais populares e influentes no desenvolvimento web, e
-        descubra como ele continua a transformar a maneira como desenvolvemos
-        aplicações modernas.Conheça o Ruby on Rails, um dos frameworks mais
-        populares e influentes no desenvolvimento web, e descubra como ele
-        continua a transformar a maneira como desenvolvemos aplicações
-        modernas.Conheça o Ruby on Rails, um dos frameworks mais populares e
-        influentes no desenvolvimento web, e descubra como ele continua a
-        transformar a maneira como desenvolvemos aplicações modernas.Conheça o
-        Ruby on Rails, um dos frameworks mais populares e influentes no
-        desenvolvimento web, e descubra como ele continua a transformar a
-        maneira como desenvolvemos aplicações modernas.
+        {{ props.post?.content }}
       </p>
     </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { defineProps } from "vue";
+
+const props = defineProps({
+  post: {
+    type: String,
+    required: true,
+  },
+});
+</script>
 
 <style>
 .container-details-news {

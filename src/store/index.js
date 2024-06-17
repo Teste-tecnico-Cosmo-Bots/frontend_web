@@ -1,11 +1,20 @@
 // src/store/index.js
 
 import { createStore } from "vuex";
-import { signIn, validToken, createPost, listPost } from "../services/api.js";
+import {
+  signIn,
+  validToken,
+  createPost,
+  listPost,
+  detailsPost,
+  createComment,
+  register,
+} from "../services/api.js";
 
 const store = createStore({
   state: {
     posts: [],
+    postOne: null,
     user: null,
     token: localStorage.getItem("token") || null,
   },
@@ -25,6 +34,9 @@ const store = createStore({
     setPosts(state, posts) {
       state.posts = posts;
     },
+    setPostOne(state, postOne) {
+      state.postOne = postOne;
+    },
   },
   actions: {
     async signIn({ commit }, { email, password }) {
@@ -36,9 +48,26 @@ const store = createStore({
         throw error;
       }
     },
+
+    async signup({ commit }, { nome, email, password, password_confirmation }) {
+      try {
+        const response = await register({
+          nome,
+          email,
+          password,
+          password_confirmation,
+        });
+        commit("setToken", response.token);
+      } catch (error) {
+        console.error("Failed to sign in:", error);
+        throw error;
+      }
+    },
+
     signOut({ commit }) {
       commit("clearToken");
     },
+
     async validateToken({ commit }) {
       const token = localStorage.getItem("token");
       console.log(token);
@@ -54,6 +83,7 @@ const store = createStore({
         console.error("Token inválido ou expirado:", error);
       }
     },
+
     async submitPosts({}, { title, description, content, router }) {
       try {
         await createPost({ title, description, content }, router);
@@ -63,10 +93,30 @@ const store = createStore({
         console.error("Token inválido ou expirado:", error);
       }
     },
+
     async getPosts({ commit }) {
       try {
         const response = await listPost();
         commit("setPosts", response);
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    async getOnePosts({ commit }, { id }) {
+      try {
+        const response = await detailsPost(id);
+        commit("setPostOne", response);
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    async submitComment({}, { content, post_id }) {
+      try {
+        await createComment({ content, post_id });
         return true;
       } catch (error) {
         console.log(error);
@@ -77,6 +127,7 @@ const store = createStore({
     token: (state) => state.token,
     user: (state) => state.user,
     posts: (state) => state.posts,
+    postOne: (state) => state.postOne,
   },
 });
 
