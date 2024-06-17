@@ -48,6 +48,22 @@ Certifique-se de que o backend da aplicação está configurado corretamente. Is
 
    Substitua `http://localhost:3000/api/v1` pela URL do backend da sua aplicação.
 
+2. **Configuração do Cliente da API**
+
+   Para facilitar o uso da API, configure o cliente Axios para utilizar uma rota base. Isto ajuda a centralizar a URL base para todas as requisições, simplificando o código e a manutenção.
+
+   No arquivo `src/services/api.js`, configure o cliente Axios da seguinte forma:
+
+   ```javascript
+   import axios from "axios";
+
+   const API_URL = "http://localhost:3000/api/v1";
+
+   export const apiClient = axios.create({
+     baseURL: API_URL,
+   });
+   ```
+
 ### Execução da Aplicação
 
 1. **Desenvolvimento**
