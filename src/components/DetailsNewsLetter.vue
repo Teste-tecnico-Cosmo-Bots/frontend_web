@@ -36,10 +36,9 @@ import { computed } from "vue";
 import { jwtDecode } from "jwt-decode";
 const token = localStorage.getItem("token");
 
-const user = computed(() => jwtDecode(token).user_id);
-const exist = computed(() => token);
+const user = computed(() => (token ? jwtDecode(token).user_id : null));
 
-console.log(jwtDecode(token).user_id, token, 202020);
+const exist = computed(() => token);
 
 const props = defineProps({
   post: {

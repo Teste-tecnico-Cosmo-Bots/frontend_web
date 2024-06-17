@@ -61,7 +61,7 @@ const token = localStorage.getItem("token");
 
 const comment = ref("");
 
-const user = computed(() => jwtDecode(token).user_id);
+const user = computed(() => (token ? jwtDecode(token).user_id : null));
 const exist = computed(() => token);
 
 const submitComment = async () => {
