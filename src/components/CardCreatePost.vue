@@ -40,17 +40,23 @@
 </template>
 
 <script setup>
-import { defineProps, ref, defineEmits } from "vue";
+import { defineProps, ref, defineEmits, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
 
 const store = useStore();
 const router = useRouter();
+const toast = useToast();
 
 const props = defineProps({
   create: {
     type: Boolean,
     default: false,
+  },
+  post: {
+    type: String,
+    default: "",
   },
 });
 
@@ -68,11 +74,35 @@ const handleSubmit = () => {
   if (props.create) {
     store.dispatch("submitPosts", { title, description, content, router });
     store.dispatch("getPosts", {});
+    toast.success("Post criado com sucesso!", {
+      timeout: 3000,
+    });
     emit("close");
   } else {
+    store.dispatch("submitEditPosts", {
+      title,
+      description,
+      content,
+      id: props.post.id,
+    });
+    store.dispatch("getOnePosts", { id: props.post.id });
+    toast.success("Post editado com sucesso!", {
+      timeout: 3000,
+    });
+    emit("close");
     return null;
   }
 };
+
+const onDetailsEdit = () => {
+  postData.value.title = props.post.title;
+  postData.value.description = props.post.description;
+  postData.value.content = props.post.content;
+};
+
+onMounted(() => {
+  onDetailsEdit();
+});
 </script>
 
 <style scoped>

@@ -68,6 +68,7 @@ import { ref } from "vue";
 import { useStore } from "vuex";
 import { defineProps, defineEmits } from "vue";
 import { useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
 
 const emit = defineEmits(["openRegister", "openLogin"]);
 
@@ -80,6 +81,7 @@ const props = defineProps({
 
 const store = useStore();
 const router = useRouter();
+const toast = useToast();
 
 const name = ref("");
 const email = ref("");
@@ -96,11 +98,15 @@ const handleSubmit = async () => {
 
       router.push("/");
     } catch (error) {
-      console.log(error);
+      toast.error("Email ou senha estão incorretos!", {
+        timeout: 3000,
+      });
     }
   } else {
     if (password.value !== confirmPassword.value) {
-      alert("As senhas não coincidem.");
+      toast.warning("As senhas não coincidem!", {
+        timeout: 3000,
+      });
       return;
     }
 
@@ -114,7 +120,9 @@ const handleSubmit = async () => {
 
       router.push("/");
     } catch (error) {
-      console.log(error);
+      toast.warning("Email já cadastrado!", {
+        timeout: 3000,
+      });
     }
   }
 };

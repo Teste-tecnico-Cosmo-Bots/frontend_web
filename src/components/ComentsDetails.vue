@@ -23,7 +23,7 @@
       </p>
 
       <img
-        v-if="exist && user == coment?.user?.id"
+        v-if="(exist && user == coment?.user?.id) || props.isAdmin"
         :src="trashIcon"
         @click="deleteComment(coment.id)"
         class="comment-icon"
@@ -49,6 +49,10 @@ const props = defineProps({
   },
   postId: {
     type: String,
+    required: true,
+  },
+  isAdmin: {
+    type: Boolean,
     required: true,
   },
 });
@@ -79,6 +83,8 @@ const deleteComment = async (id) => {
   await store.dispatch("getOnePosts", { id: props.postId });
   // await store.dispatch("getPosts", {});
 };
+
+console.log(props.isAdmin);
 </script>
 
 <style scoped>

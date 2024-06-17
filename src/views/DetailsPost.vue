@@ -3,8 +3,12 @@
   <div class="home">
     <HeaderNewLatters :margin="0" />
     <div class="container-content">
-      <DetailsNewsLetter :post="postOne" />
-      <ComentsDetails :commentsAll="postOne?.comments" :postId="postId" />
+      <DetailsNewsLetter :post="postOne" :isAdmin="isAdmin" />
+      <ComentsDetails
+        :commentsAll="postOne?.comments"
+        :postId="postId"
+        :isAdmin="isAdmin"
+      />
     </div>
   </div>
 </template>
@@ -34,6 +38,7 @@ onMounted(() => {
 });
 
 const postOne = computed(() => store.getters.postOne);
+const isAdmin = computed(() => store.getters.isAdmin);
 </script>
 
 <style>

@@ -10,6 +10,7 @@ import {
   createComment,
   register,
   destroyComment,
+  editPost,
 } from "../services/api.js";
 
 const store = createStore({
@@ -17,6 +18,7 @@ const store = createStore({
     posts: [],
     postOne: null,
     user: null,
+    isAdmin: false,
     token: localStorage.getItem("token") || null,
   },
   mutations: {
@@ -31,6 +33,9 @@ const store = createStore({
     },
     setUser(state, user) {
       state.user = user;
+    },
+    setAdmin(state, isAdmin) {
+      state.isAdmin = isAdmin;
     },
     setPosts(state, posts) {
       state.posts = posts;
@@ -79,7 +84,7 @@ const store = createStore({
         }
         const response = await validToken(token);
         commit("setUser", response);
-        console.log("Token válido.");
+        commit("setAdmin", response.isAdmin);
       } catch (error) {
         console.error("Token inválido ou expirado:", error);
       }
@@ -92,6 +97,17 @@ const store = createStore({
         return true;
       } catch (error) {
         console.error("Token inválido ou expirado:", error);
+      }
+    },
+
+    async submitEditPosts({}, { title, description, content, id }) {
+      console.log(555, { title, description, content, id });
+      try {
+        await editPost({ title, description, content }, id);
+
+        return true;
+      } catch (error) {
+        console.error(error);
       }
     },
 
@@ -138,6 +154,7 @@ const store = createStore({
     user: (state) => state.user,
     posts: (state) => state.posts,
     postOne: (state) => state.postOne,
+    isAdmin: (state) => state.isAdmin,
   },
 });
 

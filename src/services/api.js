@@ -55,6 +55,21 @@ export const createPost = async (data, router) => {
   }
 };
 
+export const editPost = async (data, id) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return false;
+    }
+
+    apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    await apiClient.patch(`/posts/${id}`, data);
+    return true;
+  } catch (error) {
+    console.error("Erro ao fazer login:", error);
+  }
+};
+
 export const listPost = async () => {
   try {
     const response = await apiClient.get("/posts");
