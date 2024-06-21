@@ -11,6 +11,7 @@ import {
   register,
   destroyComment,
   editPost,
+  toggleLike,
 } from "../services/api.js";
 
 const store = createStore({
@@ -103,6 +104,15 @@ const store = createStore({
     async submitEditPosts({}, { title, description, content, id }) {
       try {
         await editPost({ title, description, content }, id);
+
+        return true;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async submitToggleLike({}, { post_id }) {
+      try {
+        await toggleLike({ post_id });
 
         return true;
       } catch (error) {

@@ -1,7 +1,7 @@
 <!-- eslint-disable-next-line vue/multi-word-component-names -->
 <template>
   <div class="home">
-    <HeaderNewLatters :margin="0" />
+    <HeaderNewLatters :margin="0" :homePage="true" />
     <div class="container-content">
       <DetailsNewsLetter :post="postOne" :isAdmin="isAdmin" />
       <ComentsDetails

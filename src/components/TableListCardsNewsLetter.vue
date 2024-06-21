@@ -25,10 +25,10 @@
               <p class="content-card-new">{{ post.formatted_created_at }}</p>
             </div>
 
-            <!-- <div>
+            <div>
               <p class="title-card-new">Curtidas:</p>
-              <p class="content-card-new">14 curtidas</p>
-            </div> -->
+              <p class="content-card-new">{{ post.like.length }}</p>
+            </div>
           </div>
         </div>
       </div>

@@ -1,6 +1,10 @@
 <template>
   <div class="container-news" :style="{ 'margin-top': `${props.margin}px` }">
-    <div class="header-title-news">
+    <div
+      class="header-title-news"
+      :style="{ cursor: props.homePage && 'pointer' }"
+      @click="backToHomePage"
+    >
       <p>News <span>!</span></p>
     </div>
   </div>
@@ -8,15 +12,26 @@
 
 <script setup>
 import { defineProps } from "vue";
+import { useRouter } from "vue-router";
 
-// Pegando a prop margin
+const router = useRouter();
+
 const props = defineProps({
   margin: {
     type: Number,
     required: true,
     default: 45, // Valor padrão se não for passado
   },
+  homePage: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
 });
+
+const backToHomePage = () => {
+  props.homePage && router.push({ path: "/" });
+};
 </script>
 
 <style scoped>

@@ -70,6 +70,21 @@ export const editPost = async (data, id) => {
   }
 };
 
+export const toggleLike = async (data) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return false;
+    }
+
+    apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    await apiClient.post("/like", data);
+    return true;
+  } catch (error) {
+    console.error("Erro ao fazer login:", error);
+  }
+};
+
 export const listPost = async () => {
   try {
     const response = await apiClient.get("/posts");

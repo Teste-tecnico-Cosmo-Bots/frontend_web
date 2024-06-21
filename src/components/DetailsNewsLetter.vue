@@ -12,14 +12,24 @@
         </button>
       </div>
       <p class="title-details-news">
-        {{ props.post?.title }}
+        {{ props.post?.title?.trim() }}
       </p>
       <p class="description-details-news">
-        {{ props.post?.description }}
+        {{ props.post?.description?.trim() }}
       </p>
       <p class="content-details-news">
-        {{ props.post?.content }}
+        {{ props.post?.content?.trim() }}
       </p>
+    </div>
+
+    <div class="container-like">
+      <p>Gostou da publicação?</p>
+      <img
+        @click="submitLike"
+        :src="currentImage"
+        @mouseover="onnerLike ? switchImage(false) : switchImage(true)"
+        @mouseleave="onnerLike ? switchImage(true) : switchImage(false)"
+      />
     </div>
   </div>
   <ModalBase :isVisible="isModalVisible" @close="closeModal">
@@ -30,14 +40,20 @@
 <script setup>
 import ModalBase from "../components/ModalBase.vue";
 import CardCreatePost from "../components/CardCreatePost.vue";
+import offLike from "../assets/png/offLike.png";
+import onLike from "../assets/png/onLike.png";
 import { defineProps, ref } from "vue";
 
-import { computed } from "vue";
+import { useStore } from "vuex";
+import { computed, watch } from "vue";
+import { useToast } from "vue-toastification";
+
+import { useRouter } from "vue-router";
 import { jwtDecode } from "jwt-decode";
+
 const token = localStorage.getItem("token");
-
-const user = computed(() => (token ? jwtDecode(token).user_id : null));
-
+const currentImage = ref(offLike);
+const user = token ? computed(() => jwtDecode(token).user_id) : null;
 const exist = computed(() => token);
 
 const props = defineProps({
@@ -52,6 +68,11 @@ const props = defineProps({
 });
 
 const isModalVisible = ref(false);
+const onnerLike = ref(false);
+const store = useStore();
+
+const router = useRouter();
+const toast = useToast();
 
 const openModal = () => {
   isModalVisible.value = true;
@@ -60,6 +81,37 @@ const openModal = () => {
 const closeModal = () => {
   isModalVisible.value = false;
 };
+
+const switchImage = (isHover) => {
+  currentImage.value = isHover ? onLike : offLike;
+};
+
+const verifyOnnerLike = (likes) => {
+  const userId = token ? jwtDecode(token).user_id : null;
+  const onner = likes?.find((elem) => elem.user_id === userId);
+  onner ? (currentImage.value = onLike) : (currentImage.value = offLike);
+  onnerLike.value = onner ?? false;
+};
+
+const submitLike = async () => {
+  if (!token) {
+    toast.warning("Faça o login para interagir com as publicações");
+    router.push("/login");
+    return false;
+  } else {
+    const postId = props.post.id;
+    await store.dispatch("submitToggleLike", {
+      post_id: postId,
+    });
+
+    await store.dispatch("getOnePosts", { id: postId });
+  }
+};
+
+// Use Effect do react
+watch(props, (newValue) => {
+  verifyOnnerLike(newValue.post.like);
+});
 </script>
 
 <style>
@@ -69,8 +121,7 @@ const closeModal = () => {
   gap: 20px;
 }
 
-.container-details-news p {
-  line-height: 1.2;
+.container-details-news div p {
 }
 
 .title-details-news {
@@ -82,11 +133,14 @@ const closeModal = () => {
 .description-details-news {
   font-size: 16px;
   font-weight: 600;
+  line-height: 1.2;
   word-wrap: break-word;
 }
 
 .content-details-news {
   font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap;
 }
 
 .container-details-news div {
@@ -108,5 +162,23 @@ const closeModal = () => {
     background-color: var(--text-one);
     color: var(--secondary-color);
   }
+}
+
+.container-like {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.container-like p {
+  transform: translateY(3px);
+  font-weight: bold;
+}
+
+.container-like img {
+  width: 30px;
+  cursor: pointer;
+  transition: 0.1s;
 }
 </style>

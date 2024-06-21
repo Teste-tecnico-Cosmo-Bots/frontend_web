@@ -36,11 +36,15 @@
 import { computed, ref } from "vue";
 import { defineProps } from "vue";
 import trashIcon from "../assets/svg/trash.svg";
-import { jwtDecode } from "jwt-decode";
 
+import { jwtDecode } from "jwt-decode";
 import { useStore } from "vuex";
+import { useToast } from "vue-toastification";
+import { useRouter } from "vue-router";
 
 const store = useStore();
+const toast = useToast();
+const router = useRouter();
 
 const props = defineProps({
   commentsAll: {
@@ -61,11 +65,15 @@ const token = localStorage.getItem("token");
 
 const comment = ref("");
 
-const user = computed(() => (token ? jwtDecode(token).user_id : null));
+const user = token ? computed(() => jwtDecode(token).user_id) : null;
 const exist = computed(() => token);
 
 const submitComment = async () => {
-  if (comment.value.trim()) {
+  if (!token) {
+    toast.warning("Faça o login para interagir com as publicações");
+    router.push("/login");
+    return false;
+  } else if (comment.value.trim()) {
     await store.dispatch("submitComment", {
       content: comment.value.trim(),
       post_id: props.postId,
@@ -74,7 +82,9 @@ const submitComment = async () => {
     await store.dispatch("getPosts", {});
     await store.dispatch("getOnePosts", { id: props.postId });
   } else {
-    alert("Por favor, digite um comentário antes de enviar.");
+    toast.warning("Por favor, digite um comentário antes de enviar.", {
+      timeout: 3000,
+    });
   }
 };
 
@@ -83,8 +93,6 @@ const deleteComment = async (id) => {
   await store.dispatch("getOnePosts", { id: props.postId });
   // await store.dispatch("getPosts", {});
 };
-
-console.log(props.isAdmin);
 </script>
 
 <style scoped>
