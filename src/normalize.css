@@ -7,6 +7,10 @@
   --text-one: #fff;
   --text-two: #000;
   --gray: #d7d7d7;
+  --icon: #a2a2a2;
+  --text-opacity: #808080;
+  --title-gray: #434343;
+  --content-gray: #474747;
 }
 
 @keyframes colorCycle {
